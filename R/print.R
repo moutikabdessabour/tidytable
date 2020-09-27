@@ -16,6 +16,7 @@ print.tidytable <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   }
 }
 
+
 print_mat <- function(x, n = NULL, width = NULL, n_extra = NULL) {
   mat <- trunc_mat(x, n = n, width = width, n_extra = n_extra)
   mat$summary <- unname(mat$summary)
