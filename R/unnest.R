@@ -43,12 +43,11 @@ unnest. <- function(.df,
 }
 
 #' @export
-unnest..data.frame <- function(.df,
-                               ...,
+unnest..tidytable <- function(.df,
+                              ...,
                                .drop = TRUE,
                                names_sep = NULL,
                                names_repair = "unique") {
-  .df <- as_tidytable(.df)
 
   vec_assert(.drop, logical(), 1)
 
@@ -113,6 +112,20 @@ unnest_col <- function(.df, col = NULL, names_sep = NULL) {
   }
 
   result_df
+}
+
+#' @export
+unnest..data.frame <- function(.df,
+                    ...,
+                    .drop = TRUE,
+                    names_sep = NULL,
+                    names_repair = "unique"){
+  .df <- as_tidytable(.df)
+  unnest.(.df,
+          ...,
+          .drop = .drop,
+          names_sep = names_sep,
+          names_repair = names_repair)
 }
 
 globalVariables("..keep_cols")

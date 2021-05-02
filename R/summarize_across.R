@@ -54,8 +54,8 @@ summarize_across. <- function(.df, .cols = everything(), .fns = NULL, ...,
 }
 
 #' @export
-summarize_across..data.frame <- function(.df, .cols = everything(), .fns = NULL, ...,
-                                         .by = NULL, .names = NULL) {
+summarize_across..tidytable <- function(.df, .cols = everything(), .fns = NULL, ...,
+                                        .by = NULL, .names = NULL) {
   .df <- as_tidytable(.df)
 
   .by <- enquo(.by)
@@ -71,6 +71,14 @@ summarize_across..data.frame <- function(.df, .cols = everything(), .fns = NULL,
   call_list <- across_calls(.fns, .cols, .names, dots)
 
   summarize.(.df, !!!call_list, .by = !!.by)
+}
+
+#' @export
+summarize_across..data.frame <- function(.df, .cols = everything(), .fns = NULL, ...,
+                              .by = NULL, .names = NULL) {
+  .df <- as_tidytable(.df)
+  summarize_across.(.df, .cols = {{.cols}}, .fns = .fns, ...,
+                              .by = {{.by}}, .names = .names)
 }
 
 #' @export

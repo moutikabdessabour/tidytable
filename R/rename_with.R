@@ -32,8 +32,8 @@ rename_with. <- function(.df, .fn, .cols = everything(), ...) {
 }
 
 #' @export
-rename_with..data.frame <- function(.df, .fn, .cols = everything(), ...) {
-  .df <- as_tidytable(.df)
+rename_with..tidytable <- function(.df, .fn, .cols = everything(), ...) {
+
 
   .cols <- select_vec_chr(.df, {{ .cols }})
 
@@ -48,4 +48,10 @@ rename_with..data.frame <- function(.df, .fn, .cols = everything(), ...) {
   setnames(.df, .cols, new_names)
 
   .df
+}
+
+#' @export
+rename_with..data.frame <- function(.df, .fn, .cols = everything(), ...) {
+  .df <- as_tidytable(.df)
+  rename_with.(.df, .fn, .cols = {{.cols}}, ...) 
 }

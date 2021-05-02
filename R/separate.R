@@ -36,7 +36,7 @@ separate. <- function(.df, col, into,
 }
 
 #' @export
-separate..data.frame <- function(.df, col, into,
+separate..tidytable <- function(.df, col, into,
                                  sep = "[^[:alnum:]]+",
                                  remove = TRUE,
                                  convert = FALSE,
@@ -64,4 +64,16 @@ separate..data.frame <- function(.df, col, into,
   if (remove) .df <- mutate.(.df, !!col := NULL)
 
   .df[]
+}
+
+#' @export
+separate..data.frame <- function(.df, col, into, sep = "[^[:alnum:]]+",
+                                 remove = TRUE,
+                                 convert = FALSE,
+                                 ...) {
+  .df <- as_tidytable(.df)
+  separate.(.df, {{col}}, {{into}}, sep = sep,
+                                 remove = remove,
+                                 convert = convert,
+                                 ...) 
 }

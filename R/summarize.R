@@ -37,8 +37,8 @@ summarize. <- function(.df, ..., .by = NULL, .sort = FALSE) {
 }
 
 #' @export
-summarize..data.frame <- function(.df, ..., .by = NULL, .sort = FALSE) {
-  .df <- as_tidytable(.df)
+summarize..tidytable <- function(.df, ..., .by = NULL, .sort = FALSE) {
+
 
   dots <- enquos(...)
 
@@ -59,6 +59,12 @@ summarize..data.frame <- function(.df, ..., .by = NULL, .sort = FALSE) {
   }
 
   df_name_repair(.df, .name_repair = "unique")
+}
+
+#' @export
+summarize..data.frame <- function(.df, ..., .by = NULL, .sort = FALSE) {
+  .df <- as_tidytable(.df)
+  summarize.(.df, ..., .by = {{.by}}, .sort = .sort) 
 }
 
 #' @export

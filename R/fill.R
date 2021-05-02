@@ -36,7 +36,7 @@ fill. <- function(.df, ...,
 }
 
 #' @export
-fill..data.frame <- function(.df, ...,
+fill..tidytable <- function(.df, ...,
                              .direction = c("down", "up", "downup", "updown"),
                              .by = NULL) {
   .df <- as_tidytable(.df)
@@ -85,4 +85,11 @@ fill_na <- function(x, direction) {
   } else {
     vec_fill_missing(x, direction = direction)
   }
+}
+
+#' @export
+fill..data.frame <- function(.df, ..., .direction = c("down", "up", "downup", "updown"),
+                             .by = NULL) {
+  .df <- as_tidytable(.df)
+  fill.(.df, ..., .direction = .direction, .by = {{.by}})
 }

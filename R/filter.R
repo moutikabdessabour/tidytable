@@ -26,8 +26,8 @@ filter. <- function(.df, ..., .by = NULL) {
 }
 
 #' @export
-filter..data.frame <- function(.df, ..., .by = NULL) {
-  .df <- as_tidytable(.df)
+filter..tidytable <- function(.df, ..., .by = NULL) {
+
 
   .by <- enquo(.by)
 
@@ -59,4 +59,10 @@ filter..data.frame <- function(.df, ..., .by = NULL) {
   }
 
   .df
+}
+
+#' @export
+filter..data.frame <- function(.df, ..., .by = NULL) {
+  .df <- as_tidytable(.df)
+  filter.(.df, ..., .by = {{.by}})
 }

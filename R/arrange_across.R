@@ -21,8 +21,8 @@ arrange_across. <- function(.df, .cols = everything(), .fns = NULL) {
 }
 
 #' @export
-arrange_across..data.frame <- function(.df, .cols = everything(), .fns = NULL) {
-  .df <- as_tidytable(.df)
+arrange_across..tidytable <- function(.df, .cols = everything(), .fns = NULL) {
+
   .df <- copy(.df)
 
   .cols <- select_vec_chr(.df, {{ .cols }})
@@ -48,4 +48,10 @@ arrange_across..data.frame <- function(.df, .cols = everything(), .fns = NULL) {
   setorderv(.df, cols = .cols, order = .order)
 
   .df
+}
+
+#' @export
+arrange_across..data.frame <- function(.df, .cols = everything(), .fns = NULL) {
+  .df <- as_tidytable(.df)
+  arrange_across.(.df, .cols = {{.cols}}, .fns = fns) 
 }

@@ -36,8 +36,8 @@ extract. <- function(.df, col, into, regex = "([[:alnum:]]+)",
 }
 
 #' @export
-extract..data.frame <- function(.df, col, into, regex = "([[:alnum:]]+)",
-                                remove = TRUE, convert = FALSE, ...) {
+extract..tidytable <- function(.df, col, into, regex = "([[:alnum:]]+)",
+     remove = TRUE, convert = FALSE, ...) {
   .df <- as_tidytable(.df)
   .df <- shallow(.df)
 
@@ -89,6 +89,13 @@ str_extract_groups <- function(string, pattern, convert = FALSE){
     seq_len(ncol(start)),
     function(.x) substr(string, start[, .x], end[, .x])
   )
+}
+
+#' @export
+extract..data.frame <- function(.df, col, into, regex = "([[:alnum:]]+)",
+     remove = TRUE, convert = FALSE, ...) {
+  .df <- as_tidytable(.df)
+  extract.(.df, {{col}}, {{into}}, regex = regex, remove = remove, convert = convert, ...)
 }
 
 globalVariables("..groups")

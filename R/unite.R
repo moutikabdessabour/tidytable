@@ -38,8 +38,8 @@ unite. <- function(.df, col = "new_col", ..., sep = "_", remove = TRUE, na.rm = 
 }
 
 #' @export
-unite..data.frame <- function(.df, col = "new_col", ..., sep = "_", remove = TRUE, na.rm = FALSE) {
-  .df <- as_tidytable(.df)
+unite..tidytable <- function(.df, col = "new_col", ..., sep = "_", remove = TRUE, na.rm = FALSE) {
+
 
   vec_assert(sep, character(), 1)
   vec_assert(remove, logical(), 1)
@@ -69,6 +69,12 @@ unite..data.frame <- function(.df, col = "new_col", ..., sep = "_", remove = TRU
   if (remove) .df <- .df[, -..unite_cols]
 
   .df
+}
+
+#' @export
+unite..data.frame <- function(.df, col = "new_col", ..., sep = "_", remove = TRUE, na.rm = FALSE) {
+  .df <- as_tidytable(.df)
+  unite.(.df, col = col, ..., sep = sep, remove = remove, na.rm = na.rm) 
 }
 
 globalVariables("..unite_cols")

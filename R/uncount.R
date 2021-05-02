@@ -19,8 +19,8 @@ uncount. <- function(.df, weights, .remove = TRUE, .id = NULL) {
 }
 
 #' @export
-uncount..data.frame <- function(.df, weights, .remove = TRUE, .id = NULL) {
-  .df <- as_tidytable(.df)
+uncount..tidytable <- function(.df, weights, .remove = TRUE, .id = NULL) {
+
 
   weights <- enquo(weights)
 
@@ -33,4 +33,10 @@ uncount..data.frame <- function(.df, weights, .remove = TRUE, .id = NULL) {
   if (.remove) result_df <- mutate.(result_df, !!weights := NULL)
 
   result_df
+}
+
+#' @export
+uncount..data.frame <- function(.df, weights, .remove = TRUE, .id = NULL) {
+  .df <- as_tidytable(.df)
+  uncount.(.df, weights, .remove = .remove, .id = .id) 
 }

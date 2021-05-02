@@ -30,8 +30,8 @@ distinct. <- function(.df, ..., .keep_all = FALSE) {
 }
 
 #' @export
-distinct..data.frame <- function(.df, ..., .keep_all = FALSE) {
-  .df <- as_tidytable(.df)
+distinct..tidytable <- function(.df, ..., .keep_all = FALSE) {
+
 
   vec_assert(.keep_all, logical(), 1)
 
@@ -73,6 +73,12 @@ across_check <- function(dots) {
       )
     )
   }
+}
+
+#' @export
+distinct..data.frame <- function(.df, ..., .keep_all = FALSE) {
+  .df <- as_tidytable(.df)
+  distinct.(.df, ..., .keep_all = .keep_all) 
 }
 
 globalVariables("..cols")

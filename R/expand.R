@@ -29,8 +29,8 @@ expand. <- function(.df, ..., .name_repair = "check_unique") {
 }
 
 #' @export
-expand..data.frame <- function(.df, ..., .name_repair = "check_unique") {
-  .df <- as_tidytable(.df)
+expand..tidytable <- function(.df, ..., .name_repair = "check_unique") {
+
 
   dots <- enquos(...)
   dots <- dots[!map_lgl.(dots, quo_is_null)]
@@ -52,4 +52,10 @@ nesting. <- function(..., .name_repair = "check_unique") {
   out <- distinct.(out)
   setorder(out)
   out
+}
+
+#' @export
+expand..data.frame <- function(.df, ..., .name_repair = "check_unique") {
+  .df <- as_tidytable(.df)
+  expand.(.df, ..., .name_repair = .name_repair) 
 }

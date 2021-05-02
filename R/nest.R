@@ -29,8 +29,8 @@ nest. <- function(.df, ..., .names_sep = NULL) {
 }
 
 #' @export
-nest..data.frame <- function(.df, ..., .names_sep = NULL) {
-  .df <- as_tidytable(.df)
+nest..tidytable <- function(.df, ..., .names_sep = NULL) {
+
 
   if (!is.null(.names_sep)) vec_assert(.names_sep, character(), 1)
 
@@ -61,4 +61,10 @@ nest..data.frame <- function(.df, ..., .names_sep = NULL) {
   }
 
   nest_by.(.df, -c(!!!dots), .key = .key)
+}
+
+#' @export
+nest..data.frame <- function(.df, ..., .names_sep = NULL) {
+  .df <- as_tidytable(.df)
+  nest.(.df, ..., .names_sep = .names_sep) 
 }

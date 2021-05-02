@@ -55,7 +55,7 @@ pivot_wider. <- function(.df,
 }
 
 #' @export
-pivot_wider..data.frame <- function(.df,
+pivot_wider..tidytable <- function(.df,
                                     names_from = name,
                                     values_from = value,
                                     id_cols = NULL,
@@ -146,6 +146,32 @@ pivot_wider..data.frame <- function(.df,
   .df <- df_name_repair(.df, .name_repair = names_repair)
 
   as_tidytable(.df)
+}
+
+#' @export
+pivot_wider..data.frame <- function(.df,
+                         names_from = name,
+                         values_from = value,
+                         id_cols = NULL,
+                         names_sep = "_",
+                         names_prefix = "",
+                         names_glue = NULL,
+                         names_sort = FALSE,
+                         names_repair = "check_unique",
+                         values_fill = NULL,
+                         values_fn = NULL){
+  .df <- as_tidytable(.df)
+  pivot_wider.(.df,
+                         names_from = {{names_from}},
+                         values_from = {{values_from}},
+                         id_cols = {{id_cols}},
+                         names_sep = names_sep,
+                         names_prefix = names_prefix,
+                         names_glue = names_glue,
+                         names_sort = names_sort,
+                         names_repair = names_repair,
+                         values_fill = {{ values_fill }},
+                         values_fn = {{ values_fn }})
 }
 
 globalVariables(c(".", ".names_from", "..names_from", "name", "value"))

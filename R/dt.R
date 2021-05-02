@@ -24,8 +24,8 @@ dt <- function(.df, ...) {
 }
 
 #' @export
-dt.data.frame <- function(.df, ...) {
-  .df <- as_tidytable(.df)
+dt.tidytable <- function(.df, ...) {
+
 
   dots <- substitute(list(...))
 
@@ -34,4 +34,10 @@ dt.data.frame <- function(.df, ...) {
   if (needs_copy) .df <- copy(.df)
 
   .df[...]
+}
+
+#' @export
+dt.data.frame <- function(.df, ...) {
+  .df <- as_tidytable(.df)
+  dt(.df, ...) 
 }

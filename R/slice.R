@@ -46,8 +46,8 @@ slice. <- function(.df, ..., .by = NULL) {
 }
 
 #' @export
-slice..data.frame <- function(.df, ..., .by = NULL) {
-  .df <- as_tidytable(.df)
+slice..tidytable <- function(.df, ..., .by = NULL) {
+
 
   dots <- enquos(...) # Needed so .N works
   if (length(dots) == 0) return(.df)
@@ -93,8 +93,8 @@ slice_head. <- function(.df, n = 5, .by = NULL) {
 }
 
 #' @export
-slice_head..data.frame <- function(.df, n = 5, .by = NULL) {
-  .df <- as_tidytable(.df)
+slice_head..tidytable <- function(.df, n = 5, .by = NULL) {
+
 
   n <- enquo(n)
 
@@ -130,8 +130,8 @@ slice_tail. <- function(.df, n = 5, .by = NULL) {
 }
 
 #' @export
-slice_tail..data.frame <- function(.df, n = 5, .by = NULL) {
-  .df <- as_tidytable(.df)
+slice_tail..tidytable <- function(.df, n = 5, .by = NULL) {
+
 
   n <- enquo(n)
 
@@ -167,8 +167,8 @@ slice_max. <- function(.df, order_by, n = 1, .by = NULL) {
 }
 
 #' @export
-slice_max..data.frame <- function(.df, order_by, n = 1, .by = NULL) {
-  .df <- as_tidytable(.df)
+slice_max..tidytable <- function(.df, order_by, n = 1, .by = NULL) {
+
 
   if (missing(order_by)) abort("order_by must be supplied")
 
@@ -184,8 +184,8 @@ slice_min. <- function(.df, order_by, n = 1, .by = NULL) {
 }
 
 #' @export
-slice_min..data.frame <- function(.df, order_by, n = 1, .by = NULL) {
-  .df <- as_tidytable(.df)
+slice_min..tidytable <- function(.df, order_by, n = 1, .by = NULL) {
+
 
   if (missing(order_by)) abort("order_by must be supplied")
 
@@ -202,7 +202,7 @@ slice_sample. <- function(.df, n, prop, weight_by = NULL,
 }
 
 #' @export
-slice_sample..data.frame <- function(.df, n, prop, weight_by = NULL,
+slice_sample..tidytable <- function(.df, n, prop, weight_by = NULL,
                                      replace = FALSE, .by = NULL) {
   size <- check_slice_size(n, prop, "slice_sample")
 
@@ -256,6 +256,44 @@ check_slice_size <- function(n, prop, .slice_fn = "check_slice_size") {
   } else {
     abort("Must supply exactly one of `n` and `prop` arguments.")
   }
+}
+
+#' @export
+slice_sample..data.frame <- function(.df, n, prop, weight_by = NULL,
+                                     replace = FALSE, .by = NULL) {
+  .df <- as_tidytable(.df)
+  slice_sample.(.df, n, prop, weight_by = {{weight_by}},
+                                     replace = replace, .by = {{.by}})
+}
+
+#' @export
+slice_min..data.frame <- function(.df, order_by, n = 1, .by = NULL) {
+  .df <- as_tidytable(.df)
+  slice_min.(.df, {{order_by}}, n = n, .by = {{.by}}) 
+}
+
+#' @export
+slice_max..data.frame <- function(.df, order_by, n = 1, .by = NULL) {
+  .df <- as_tidytable(.df)
+  slice_max.(.df, {{order_by}}, n = n, .by = {{.by}}) 
+}
+
+#' @export
+slice_tail..data.frame <- function(.df, n = 5, .by = NULL) {
+  .df <- as_tidytable(.df)
+  slice_tail.(.df, n = n, .by = {{.by}}) 
+}
+
+#' @export
+slice_head..data.frame <- function(.df, n = 5, .by = NULL) {
+  .df <- as_tidytable(.df)
+  slice_head.(.df, n = n, .by = {{.by}}) 
+}
+
+#' @export
+slice..data.frame <- function(.df, ..., .by = NULL) {
+  .df <- as_tidytable(.df)
+  slice.(.df, ..., .by = {{.by}}) 
 }
 
 globalVariables("V1")

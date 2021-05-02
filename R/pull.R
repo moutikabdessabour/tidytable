@@ -33,8 +33,8 @@ pull. <- function(.df, var = -1) {
 }
 
 #' @export
-pull..data.frame <- function(.df, var = -1) {
-  var_list <- as.list(seq_along(.df))
+pull..tidytable <- function(.df, var = -1) {
+var_list <- as.list(seq_along(.df))
 
   names(var_list) <- names(.df)
 
@@ -43,4 +43,10 @@ pull..data.frame <- function(.df, var = -1) {
   if (.var < 0) .var <- length(var_list) + .var + 1
 
   .df[[.var]]
+}
+
+#' @export
+pull..data.frame <- function(.df, var = -1) {
+  .df <- as_tidytable(.df)
+  pull.(.df, var = {{var}}) 
 }

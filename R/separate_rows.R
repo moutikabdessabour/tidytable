@@ -26,8 +26,8 @@ separate_rows. <- function(.df, ..., sep = "[^[:alnum:].]+", convert = FALSE) {
 }
 
 #' @export
-separate_rows..data.frame <- function(.df, ..., sep = "[^[:alnum:].]+", convert = FALSE) {
-  .df <- as_tidytable(.df)
+separate_rows..tidytable <- function(.df, ..., sep = "[^[:alnum:].]+", convert = FALSE) {
+
   .df <- shallow(.df)
 
   vec_assert(sep, character(), 1)
@@ -70,6 +70,12 @@ separate_rows..data.frame <- function(.df, ..., sep = "[^[:alnum:].]+", convert 
   if (convert) .df <- mutate_across.(.df, c(!!!cols), type.convert, as.is = TRUE)
 
   .df[]
+}
+
+#' @export
+separate_rows..data.frame <- function(.df, ..., sep = "[^[:alnum:].]+", convert = FALSE) {
+  .df <- as_tidytable(.df)
+  separate_rows.(.df, ..., sep = sep, convert = convert) 
 }
 
 globalVariables(".id")

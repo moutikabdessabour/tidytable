@@ -41,8 +41,8 @@ select. <- function(.df, ...) {
 }
 
 #' @export
-select..data.frame <- function(.df, ...) {
-  .df <- as_tidytable(.df)
+select..tidytable <- function(.df, ...) {
+
 
   select_cols <- select_dots_idx(.df, ...)
 
@@ -51,6 +51,12 @@ select..data.frame <- function(.df, ...) {
   .df <- set_names(.df, names(select_cols))
 
   .df
+}
+
+#' @export
+select..data.frame <- function(.df, ...) {
+  .df <- as_tidytable(.df)
+  select.(.df, ...) 
 }
 
 globalVariables("..select_cols")

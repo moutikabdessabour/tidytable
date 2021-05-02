@@ -28,8 +28,8 @@ top_n. <- function(.df, n = 5, wt = NULL, .by = NULL) {
 }
 
 #' @export
-top_n..data.frame <- function(.df, n = 5, wt = NULL, .by = NULL) {
-  .df <- as_tidytable(.df)
+top_n..tidytable <- function(.df, n = 5, wt = NULL, .by = NULL) {
+
 
   wt <- enquo(wt)
 
@@ -38,4 +38,10 @@ top_n..data.frame <- function(.df, n = 5, wt = NULL, .by = NULL) {
   } else {
     slice_max.(.df, order_by = !!wt, n = {{ n }}, .by = {{ .by }})
   }
+}
+
+#' @export
+top_n..data.frame <- function(.df, n = 5, wt = NULL, .by = NULL) {
+  .df <- as_tidytable(.df)
+  top_n.(.df, n = n, wt = {{wt}}, .by = {{.by}}) 
 }

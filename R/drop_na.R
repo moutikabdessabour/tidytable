@@ -29,8 +29,8 @@ drop_na. <- function(.df, ...) {
 }
 
 #' @export
-drop_na..data.frame <- function(.df, ...) {
-  .df <- as_tidytable(.df)
+drop_na..tidytable <- function(.df, ...) {
+
 
   dots <- enquos(...)
 
@@ -41,4 +41,10 @@ drop_na..data.frame <- function(.df, ...) {
 
     na.omit(.df, cols = drop_cols)
   }
+}
+
+#' @export
+drop_na..data.frame <- function(.df, ...) {
+  .df <- as_tidytable(.df)
+  drop_na.(.df, ...) 
 }

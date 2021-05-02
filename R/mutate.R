@@ -51,9 +51,9 @@ mutate. <- function(.df, ..., .by = NULL,
 }
 
 #' @export
-mutate..data.frame <- function(.df, ..., .by = NULL,
-                               .keep = "all", .before = NULL, .after = NULL) {
-  .df <- as_tidytable(.df)
+mutate..tidytable <- function(.df, ..., .by = NULL,
+                              .keep = "all", .before = NULL, .after = NULL) {
+
   .df <- shallow(.df)
 
   .by <- enquo(.by)
@@ -179,6 +179,14 @@ extract_used <- function(x) {
   } else {
     unique(unlist(lapply(x[-1], extract_used)))
   }
+}
+
+#' @export
+mutate..data.frame <- function(.df, ..., .by = NULL,
+                              .keep = "all", .before = NULL, .after = NULL){
+  .df <- as_tidytable(.df)
+  mutate.(.df, ..., .by = {{.by}},
+                              .keep = .keep, .before = {{.before}}, .after = {{.after}})
 }
 
 globalVariables("..keep")

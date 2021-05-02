@@ -27,8 +27,8 @@ arrange. <- function(.df, ...) {
 }
 
 #' @export
-arrange..data.frame <- function(.df, ...) {
-  .df <- as_tidytable(.df)
+arrange..tidytable <- function(.df, ...) {
+
 
   dots <- enquos(...)
   if (length(dots) == 0) return(.df)
@@ -39,4 +39,10 @@ arrange..data.frame <- function(.df, ...) {
   dt_expr <- call2_i(.df, i)
 
   eval_tidy(dt_expr)
+}
+
+#' @export
+arrange..data.frame <- function(.df, ...) {
+  .df <- as_tidytable(.df)
+  arrange.(.df, ...) 
 }
