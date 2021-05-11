@@ -53,6 +53,13 @@ mutate. <- function(.df, ..., .by = NULL,
 #' @export
 mutate..tidytable <- function(.df, ..., .by = NULL,
                               .keep = "all", .before = NULL, .after = NULL) {
+  
+  env <- caller_env()
+
+  if(!is_tidytable(.df)){
+    .df <- as_tidytable(.df)
+    env <- caller_env(2)
+  }
 
   .df <- shallow(.df)
 
@@ -60,6 +67,7 @@ mutate..tidytable <- function(.df, ..., .by = NULL,
 
   dots <- enquos(...)
   if (length(dots) == 0) return(.df)
+
 
   mask <- build_data_mask(dots)
 
@@ -82,7 +90,7 @@ mutate..tidytable <- function(.df, ..., .by = NULL,
 
       dt_expr <- call2_j(.df, j)
 
-      .df <- eval_tidy(dt_expr, mask, caller_env())
+      .df <- eval_tidy(dt_expr, mask, env)
     }
   } else {
     if (length(dots) > 1) {
@@ -111,7 +119,7 @@ mutate..tidytable <- function(.df, ..., .by = NULL,
       j <- call2(":=", !!!null_dots)
       dt_expr <- call2_j(.df, j)
 
-      .df <- eval_tidy(dt_expr, mask, caller_env())
+      .df <- eval_tidy(dt_expr, mask, env)
     }
 
     if (length(dots) > 0) {
@@ -122,7 +130,7 @@ mutate..tidytable <- function(.df, ..., .by = NULL,
       j <- call2(":=", call2("c", !!!dots_names), expr)
       dt_expr <- call2_j(.df, j, .by)
 
-      .df <- eval_tidy(dt_expr, mask, caller_env())
+      .df <- eval_tidy(dt_expr, mask, env)
     }
   }
 
@@ -184,8 +192,7 @@ extract_used <- function(x) {
 #' @export
 mutate..data.frame <- function(.df, ..., .by = NULL,
                               .keep = "all", .before = NULL, .after = NULL){
-  .df <- as_tidytable(.df)
-  mutate.(.df, ..., .by = {{.by}},
+  mutate..tidytable(.df, ..., .by = {{.by}},
                               .keep = .keep, .before = {{.before}}, .after = {{.after}})
 }
 

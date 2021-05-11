@@ -48,7 +48,15 @@ mutate_across. <- function(.df, .cols = everything(), .fns = NULL, ...,
 #' @export
 mutate_across..tidytable <- function(.df, .cols = everything(), .fns = NULL, ...,
                                      .by = NULL, .names = NULL) {
-  .df <- as_tidytable(.df)
+    
+  env <- caller_env()
+
+  if(!is_tidytable(.df)){
+    .df <- as_tidytable(.df)
+    env <- caller_env(2)
+  }
+
+  .df <- shallow(.df)
 
   .by <- enquo(.by)
 
@@ -64,13 +72,12 @@ mutate_across..tidytable <- function(.df, .cols = everything(), .fns = NULL, ...
 
   dt_expr <- call2("mutate.", .df, !!!call_list, .by = .by, .ns = "tidytable")
 
-  eval_tidy(dt_expr, env = caller_env())
+  eval_tidy(dt_expr, env = env)
 }
 
 #' @export
 mutate_across..data.frame <- function(.df, .cols = everything(), .fns = NULL, ..., 
                                        .by = NULL, .names = NULL) {
-  .df <- as_tidytable(.df)
-  mutate_across.(.df, .cols = {{.cols}}, .fns = !!enexpr(.fns), ...,
+  mutate_across..tidytable(.df, .cols = {{.cols}}, .fns = !!enexpr(.fns), ...,
                                      .by = {{.by}}, .names = .names)
 }

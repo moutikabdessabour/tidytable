@@ -28,7 +28,13 @@ filter. <- function(.df, ..., .by = NULL) {
 #' @export
 filter..tidytable <- function(.df, ..., .by = NULL) {
 
+  env <- caller_env()
 
+  if(!is_tidytable(.df)){
+    .df <- as_tidytable(.df)
+    env <- caller_env(2)
+  }
+  
   .by <- enquo(.by)
 
   dots <- enquos(...)
@@ -43,7 +49,7 @@ filter..tidytable <- function(.df, ..., .by = NULL) {
   if (quo_is_null(.by)) {
     dt_expr <- call2_i(.df, i)
 
-    .df <- eval_tidy(dt_expr, mask, caller_env())
+    .df <- eval_tidy(dt_expr, mask, env)
   } else {
     .by <- select_vec_chr(.df, !!.by)
 
@@ -53,7 +59,7 @@ filter..tidytable <- function(.df, ..., .by = NULL) {
 
     dt_expr <- call2_j(.df, j, .by)
 
-    .df <- eval_tidy(dt_expr, mask, caller_env())
+    .df <- eval_tidy(dt_expr, mask, env)
 
     setcolorder(.df, col_order)
   }
@@ -63,6 +69,5 @@ filter..tidytable <- function(.df, ..., .by = NULL) {
 
 #' @export
 filter..data.frame <- function(.df, ..., .by = NULL) {
-  .df <- as_tidytable(.df)
-  filter.(.df, ..., .by = {{.by}})
+  filter..tidytable(.df, ..., .by = {{.by}})
 }
