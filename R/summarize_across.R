@@ -77,7 +77,7 @@ summarize_across..tidytable <- function(.df, .cols = everything(), .fns = NULL, 
 summarize_across..data.frame <- function(.df, .cols = everything(), .fns = NULL, ...,
                               .by = NULL, .names = NULL) {
   .df <- as_tidytable(.df)
-  summarize_across.(.df, .cols = {{.cols}}, .fns = .fns, ...,
+  summarize_across.(.df, .cols = {{.cols}}, .fns = {{.fns}}, ...,
                               .by = {{.by}}, .names = .names)
 }
 

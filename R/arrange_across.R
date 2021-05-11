@@ -53,5 +53,5 @@ arrange_across..tidytable <- function(.df, .cols = everything(), .fns = NULL) {
 #' @export
 arrange_across..data.frame <- function(.df, .cols = everything(), .fns = NULL) {
   .df <- as_tidytable(.df)
-  arrange_across.(.df, .cols = {{.cols}}, .fns = fns) 
+  arrange_across.(.df, .cols = {{.cols}}, .fns = .fns) 
 }
